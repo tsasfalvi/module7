@@ -5,10 +5,16 @@ import st.domain.Role;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "user")
@@ -20,6 +26,10 @@ public class UserEntity {
     private String password;
     @Enumerated(STRING)
     private Role role;
+
+    @OneToMany(fetch = LAZY, cascade = ALL)
+    @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "user_email"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private Set<BookEntity> subscriptions;
 
     public String getEmail() {
         return email;
@@ -55,6 +65,22 @@ public class UserEntity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Boolean getSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(Boolean suspended) {
+        this.suspended = suspended;
+    }
+
+    public Set<BookEntity> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<BookEntity> subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     @Override

@@ -4,14 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "book")
-public class Book {
+public class BookEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -19,10 +18,10 @@ public class Book {
     private String title;
     private String author;
 
-    public Book() {
+    public BookEntity() {
     }
 
-    public Book(String title, String author) {
+    public BookEntity(String title, String author) {
         this.title = title;
         this.author = author;
     }
@@ -38,14 +37,26 @@ public class Book {
         return author;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        Book book = (Book) o;
-        return Objects.equals(id, book.id);
+        BookEntity bookEntity = (BookEntity) o;
+        return Objects.equals(id, bookEntity.id);
     }
 
     @Override

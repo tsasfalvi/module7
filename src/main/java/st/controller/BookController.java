@@ -2,7 +2,7 @@ package st.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import st.entity.Book;
+import st.entity.BookEntity;
 import st.repository.BookRepository;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -14,7 +14,7 @@ public class BookController {
     private BookRepository bookRepository;
 
     @RequestMapping(method = GET)
-    public Iterable<Book> getBooks() {
+    public Iterable<BookEntity> getBooks() {
         return bookRepository.findAll();
     }
 }
