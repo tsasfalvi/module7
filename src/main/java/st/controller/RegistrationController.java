@@ -16,13 +16,13 @@ import javax.validation.Valid;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/registration")
 public class RegistrationController {
     @Autowired
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(value = "/registration", method = POST)
+    @RequestMapping(method = POST)
     public boolean register(@Valid @RequestBody final UserRegistration userRegistration, BindingResult result, WebRequest request, Errors errors) {
         if (result.hasErrors()) {
             return false;

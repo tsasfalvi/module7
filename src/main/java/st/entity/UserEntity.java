@@ -22,7 +22,7 @@ public class UserEntity {
     @Id
     private String email;
     private String name;
-    private Boolean suspended;
+    private boolean suspended;
     private String password;
     @Enumerated(STRING)
     private Role role;
@@ -71,7 +71,7 @@ public class UserEntity {
         return suspended;
     }
 
-    public void setSuspended(Boolean suspended) {
+    public void setSuspended(boolean suspended) {
         this.suspended = suspended;
     }
 
