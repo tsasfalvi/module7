@@ -2,12 +2,16 @@ package st.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import st.dto.UserRegistration;
 import st.entity.UserEntity;
 import st.repository.UserRepository;
 
+import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static st.domain.Role.ROLE_USER;
 
 @Service
@@ -28,5 +32,21 @@ public class UserService {
         userEntity.setRole(ROLE_USER);
 
         userRepository.save(userEntity);
+    }
+
+    @Transactional(propagation = REQUIRED)
+    public void update(UserEntity userEntity) {
+        userRepository.save(userEntity);
+    }
+
+    @Transactional(propagation = REQUIRED)
+    public UserEntity getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUser = authentication.getName();
+            return userRepository.findOne(currentUser);
+        }
+
+        return null;
     }
 }

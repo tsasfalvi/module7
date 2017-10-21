@@ -1,0 +1,84 @@
+{
+	"variables": [],
+	"info": {
+		"name": "module7",
+		"_postman_id": "898b969e-46eb-c560-9e1b-8e5cb5cf7813",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "registration",
+			"request": {
+				"url": "http://localhost:8080/module7/registration",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"tam@afjd.jf\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "book list",
+			"request": {
+				"url": "http://localhost:8080/module7/book",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic am9obkBkb2UuaHU6cGFzcw==",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"tam@afjd.jf\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "single book",
+			"request": {
+				"url": "http://localhost:8080/module7/book/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "subscribe",
+			"request": {
+				"url": "http://localhost:8080/module7/subscribe/2",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic am9obkBkb2UuaHU6cGFzcw==",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
