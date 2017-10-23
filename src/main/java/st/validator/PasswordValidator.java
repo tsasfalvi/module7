@@ -9,7 +9,6 @@ import java.util.Objects;
 public class PasswordValidator implements ConstraintValidator<PasswordValid, Object> {
     @Override
     public void initialize(PasswordValid constraintAnnotation) {
-
     }
 
     @Override

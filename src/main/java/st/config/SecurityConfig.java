@@ -22,7 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configureBooks(http);
         configureRegistration(http);
 
-        configureRestProfiles(http);
         configureBasicAuth(http);
 
         http.csrf().disable();
@@ -31,10 +30,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void configureRegistration(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(POST, "/registration").permitAll();
-    }
-
-    private void configureRestProfiles(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(GET, "/profile/**").permitAll();
     }
 
     private void configureBooks(HttpSecurity http) throws Exception {

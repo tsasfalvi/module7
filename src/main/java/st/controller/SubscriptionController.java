@@ -18,7 +18,7 @@ public class SubscriptionController {
 
     @ResponseBody
     @RequestMapping(value = "/{bookId}", method = PUT)
-    public boolean subscribe(@PathVariable String bookId, Authentication authentication) {
-        return subscriptionFacade.subscribe(Integer.valueOf(bookId));
+    public boolean subscribe(@PathVariable int bookId, Authentication authentication) {
+        return subscriptionFacade.subscribe(bookId);
     }
 }

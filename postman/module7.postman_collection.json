@@ -79,6 +79,31 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "borrow",
+			"request": {
+				"url": "http://localhost:8080/module7/book/borrow",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic am9obkBkb2UuaHU6cGFzcw==",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"bookId\": 2,\n\t\"till\": \"2017-11-01\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

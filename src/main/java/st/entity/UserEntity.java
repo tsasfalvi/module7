@@ -31,6 +31,9 @@ public class UserEntity {
     @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "user_email"), inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<BookEntity> subscriptions;
 
+    @OneToMany(fetch = LAZY, mappedBy = "pk.user", cascade = ALL)
+    private Set<BorrowEntity> borrows;
+
     public String getEmail() {
         return email;
     }

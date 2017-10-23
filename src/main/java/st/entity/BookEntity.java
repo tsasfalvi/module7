@@ -3,9 +3,13 @@ package st.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Objects;
+import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -17,6 +21,8 @@ public class BookEntity {
     private Long id;
     private String title;
     private String author;
+    @OneToMany(fetch = LAZY, mappedBy = "pk.book", cascade = ALL)
+    private Set<BorrowEntity> borrows;
 
     public BookEntity() {
     }
@@ -47,6 +53,15 @@ public class BookEntity {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    @OneToMany(fetch = LAZY, mappedBy = "pk")
+    public Set<BorrowEntity> getBorrows() {
+        return borrows;
+    }
+
+    public void setBorrows(Set<BorrowEntity> borrows) {
+        this.borrows = borrows;
     }
 
     @Override
