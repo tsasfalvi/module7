@@ -44,7 +44,7 @@ public class UserService {
     }
 
     @Transactional(propagation = REQUIRED)
-    public UserEntity getCurrentUser() {
+    UserEntity getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUser = authentication.getName();
@@ -53,4 +53,6 @@ public class UserService {
 
         return null;
     }
+
+
 }

@@ -1,4 +1,4 @@
-package st.service.facade;
+package st.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,11 +8,11 @@ import st.entity.BookEntity;
 import st.entity.BorrowEntity;
 import st.entity.UserEntity;
 import st.repository.BookRepository;
-import st.service.BookService;
-import st.service.UserService;
 
-import static st.service.facade.BorrowFacade.BorrowResult.FAILED;
-import static st.service.facade.BorrowFacade.BorrowResult.SUCCESS;
+import java.util.Objects;
+
+import static st.service.BorrowFacade.BorrowResult.FAILED;
+import static st.service.BorrowFacade.BorrowResult.SUCCESS;
 
 @Service
 public class BorrowFacade {
@@ -41,6 +41,21 @@ public class BorrowFacade {
         }
 
         return SUCCESS;
+    }
+
+    public boolean updateBorrowTime(Borrow borrow) {
+        UserEntity currentUser = userService.getCurrentUser();
+        currentUser
+                .getBorrows()
+                .stream()
+                .filter(borrowEntity -> Objects.equals(borrowEntity.getBook().getId(), borrow.getBookId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Borrow not found"))
+                .setTill(borrow.getTill());
+
+        userService.update(currentUser);
+
+        return true;
     }
 
     public enum BorrowResult {

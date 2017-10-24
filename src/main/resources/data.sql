@@ -5,4 +5,4 @@ INSERT INTO user (email, name, suspended, password, role) VALUES ('john@doe.hu',
 
 insert into subscription (user_email, book_id) values ('john@doe.hu', 1)
 
-insert into borrow (till, user_email, book_id) values (DATE '2020-10-10', 'john@doe.hu', 1)
+insert into borrow (till, user_email, book_id) values (DATE '2017-11-10', 'john@doe.hu', 1)

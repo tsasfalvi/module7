@@ -1,4 +1,4 @@
-package st.service.facade;
+package st.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import st.entity.BookEntity;
 import st.entity.UserEntity;
 import st.repository.BookRepository;
-import st.service.UserService;
 
 @Service
 public class SubscriptionFacade {

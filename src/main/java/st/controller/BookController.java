@@ -12,8 +12,8 @@ import st.dto.Book;
 import st.dto.Borrow;
 import st.entity.BookEntity;
 import st.service.BookService;
-import st.service.facade.BorrowFacade;
-import st.service.facade.BorrowFacade.BorrowResult;
+import st.service.BorrowFacade;
+import st.service.BorrowFacade.BorrowResult;
 
 import javax.validation.Valid;
 
@@ -65,5 +65,11 @@ public class BookController {
     @RequestMapping(value = "/borrow", method = POST)
     public BorrowResult borrow(@RequestBody @Valid Borrow borrow) {
         return borrowFacade.borrow(borrow);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/borrow", method = PUT)
+    public boolean updateBorrow(@RequestBody @Valid Borrow borrow) {
+        return borrowFacade.updateBorrowTime(borrow);
     }
 }

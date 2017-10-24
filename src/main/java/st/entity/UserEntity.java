@@ -86,6 +86,14 @@ public class UserEntity {
         this.subscriptions = subscriptions;
     }
 
+    public Set<BorrowEntity> getBorrows() {
+        return borrows;
+    }
+
+    public void setBorrows(Set<BorrowEntity> borrows) {
+        this.borrows = borrows;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
