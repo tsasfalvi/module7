@@ -28,7 +28,7 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UsernameNotFoundException("No userEntity found with username: " + email);
         }
 
-        String password = userEntity.getPassword().toLowerCase();
+        String password = userEntity.getPassword();
         boolean enabled = !userEntity.isSuspended();
         List<SimpleGrantedAuthority> authorities = singletonList(new SimpleGrantedAuthority(userEntity.getRole().toString()));
 

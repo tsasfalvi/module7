@@ -15,7 +15,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
                 controller:'BookController',
                 controllerAs:'ctrl',
                 resolve: {
-                    users: function ($q, BookService) {
+                    books: function ($q, BookService) {
                         console.log('Load all books');
                         var deferred = $q.defer();
                         BookService.loadAllBooks().then(deferred.resolve, deferred.resolve);

@@ -2,6 +2,8 @@ package st.service;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,8 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 @Service
 public class BookService {
+    private static final Logger LOG = LoggerFactory.getLogger(BookService.class);
+
     @Autowired
     private BookRepository bookRepository;
     @Autowired
@@ -32,5 +36,25 @@ public class BookService {
     @Transactional(propagation = REQUIRED)
     public void update(BookEntity bookEntity) {
         bookRepository.save(bookEntity);
+    }
+
+    @Transactional(propagation = REQUIRED)
+    public Book saveOrUpdate(Book book) {
+        BookEntity bookEntity;
+        if (book.getId() != null) {
+            bookEntity = bookRepository.findOne(book.getId());
+            LOG.info("Loaded bookEntity: {}", bookEntity);
+        } else {
+            bookEntity = new BookEntity();
+        }
+        bookEntity.setTitle(book.getTitle());
+        bookEntity.setAuthor(book.getAuthor());
+        bookRepository.save(bookEntity);
+
+        return book;
+    }
+
+    public void delete(long bookId) {
+        bookRepository.delete(bookId);
     }
 }

@@ -22,7 +22,7 @@ angular.module('crudApp').factory('BookService',
                     .then(
                         function (response) {
                             console.log('All books fetched successfully');
-                            $localStorage.books = response.data._embedded;
+                            $localStorage.books = response.data;
                             console.log('books: ', $localStorage.books);
                             deferred.resolve(response);
                         },

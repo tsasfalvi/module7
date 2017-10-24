@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import st.dto.UserRegistration;
@@ -20,6 +21,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void createUser(UserRegistration userRegistration) {
@@ -29,6 +32,7 @@ public class UserService {
 
         UserEntity userEntity = modelMapper.map(userRegistration, UserEntity.class);
 
+        userEntity.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
         userEntity.setRole(ROLE_USER);
 
         userRepository.save(userEntity);
