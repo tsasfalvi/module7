@@ -1,6 +1,6 @@
 package st.entity;
 
-import st.domain.Role;
+import st.dto.Role;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;

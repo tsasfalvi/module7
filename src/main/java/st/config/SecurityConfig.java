@@ -12,6 +12,9 @@ import st.service.UserDetailsService;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
+import static st.dto.Role.ROLE_LIBRARIAN;
+import static st.dto.Role.ROLE_USER;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -24,11 +27,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configureH2(http);
         configureBooks(http);
         configureRegistration(http);
+        configureUser(http);
 
         configureBasicAuth(http);
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
+    }
+
+    private void configureUser(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers(GET, "/user/profile").hasAuthority(ROLE_USER.toString());
     }
 
     private void configureRegistration(HttpSecurity http) throws Exception {
@@ -37,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void configureBooks(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(GET, "/book", "/book/*").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/book/borrow").hasAuthority(ROLE_USER.toString());
+        http.authorizeRequests().antMatchers(PUT, "/book/*/handover").hasAuthority(ROLE_LIBRARIAN.toString());
     }
 
     private void configureBasicAuth(HttpSecurity http) throws Exception {

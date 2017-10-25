@@ -1,5 +1,7 @@
 package st.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,12 +16,27 @@ import java.util.Objects;
 @Table(name = "borrow")
 public class BorrowEntity {
     @EmbeddedId
+    @JsonIgnore
     private Pk pk = new Pk();
 
     private LocalDate till;
 
+    private boolean handedOver;
+
+    public Long getBookId() {
+        return pk.getBook().getId();
+    }
+
     public LocalDate getTill() {
         return till;
+    }
+
+    public boolean isHandedOver() {
+        return handedOver;
+    }
+
+    public void setHandedOver(boolean handedOver) {
+        this.handedOver = handedOver;
     }
 
     public void setTill(LocalDate till) {
@@ -27,6 +44,7 @@ public class BorrowEntity {
     }
 
     @Transient
+    @JsonIgnore
     public BookEntity getBook() {
         return pk.getBook();
     }
@@ -36,8 +54,15 @@ public class BorrowEntity {
     }
 
     @Transient
+    @JsonIgnore
     public UserEntity getUser() {
         return pk.getUser();
+    }
+
+    @Transient
+    @JsonIgnore
+    public Pk getPk() {
+        return pk;
     }
 
     public void setUser(UserEntity user) {

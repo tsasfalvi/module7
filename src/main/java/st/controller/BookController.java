@@ -1,7 +1,5 @@
 package st.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import st.dto.Book;
 import st.dto.Borrow;
+import st.dto.Handover;
+import st.dto.ReturnBook;
 import st.entity.BookEntity;
 import st.service.BookService;
 import st.service.BorrowFacade;
@@ -17,13 +17,14 @@ import st.service.BorrowFacade.BorrowResult;
 
 import javax.validation.Valid;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 @RequestMapping("/book")
 public class BookController {
-    private static final Logger LOG = LoggerFactory.getLogger(BookController.class);
-
     @Autowired
     private BookService bookService;
     @Autowired
@@ -37,21 +38,19 @@ public class BookController {
 
     @ResponseBody
     @RequestMapping(method = POST)
-    public Book save(@RequestBody Book book) {
-        LOG.info("Getting book to save: {}, {}", book.getAuthor(), book.getTitle());
-        return bookService.saveOrUpdate(book);
+    public void save(@RequestBody Book book) {
+        bookService.saveOrUpdate(book);
     }
 
     @ResponseBody
     @RequestMapping(value = "/{bookId}", method = PUT)
-    public Book update(@RequestBody Book book) {
-        LOG.info("Getting book to update: {}, {}, {}", book.getId(), book.getAuthor(), book.getTitle());
-        return bookService.saveOrUpdate(book);
+    public void update(@RequestBody Book book) {
+        bookService.saveOrUpdate(book);
     }
 
     @ResponseBody
     @RequestMapping(value = "/{bookId}", method = GET)
-    public Book getOne(@PathVariable int bookId) {
+    public Book get(@PathVariable int bookId) {
         return bookService.getBook(bookId);
     }
 
@@ -71,5 +70,17 @@ public class BookController {
     @RequestMapping(value = "/borrow", method = PUT)
     public boolean updateBorrow(@RequestBody @Valid Borrow borrow) {
         return borrowFacade.updateBorrowTime(borrow);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/returnBook", method = DELETE)
+    public boolean returnBook(@RequestBody @Valid ReturnBook returnBook) {
+        return borrowFacade.returnBook(returnBook);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/handover", method = PUT)
+    public boolean updateBorrow(@RequestBody @Valid Handover handover) {
+        return borrowFacade.handover(handover);
     }
 }

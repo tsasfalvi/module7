@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import st.dto.Borrow;
+import st.dto.Handover;
+import st.dto.ReturnBook;
 import st.entity.BookEntity;
 import st.entity.BorrowEntity;
 import st.entity.UserEntity;
@@ -54,6 +56,37 @@ public class BorrowFacade {
                 .setTill(borrow.getTill());
 
         userService.update(currentUser);
+
+        return true;
+    }
+
+    public boolean handover(Handover handover) {
+        UserEntity user = userService.getUser(handover.getUser());
+        user
+                .getBorrows()
+                .stream()
+                .filter(borrowEntity -> Objects.equals(borrowEntity.getBook().getId(), handover.getBookId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Borrow not found"))
+                .setHandedOver(true);
+
+        userService.update(user);
+
+        return true;
+    }
+
+    public boolean returnBook(ReturnBook returnBook) {
+        UserEntity user = userService.getUser(returnBook.getUser());
+        BorrowEntity borrow = user
+                .getBorrows()
+                .stream()
+                .filter(borrowEntity -> Objects.equals(borrowEntity.getBook().getId(), returnBook.getBookId()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Borrow not found"));
+
+        borrow.setHandedOver(false);
+
+        userService.update(user);
 
         return true;
     }
