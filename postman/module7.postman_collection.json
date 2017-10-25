@@ -8,60 +8,136 @@
 	},
 	"item": [
 		{
-			"name": "registration",
-			"request": {
-				"url": "http://localhost:8080/module7/registration",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"tam@afjd.jf\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "book list",
-			"request": {
-				"url": "http://localhost:8080/module7/book",
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
+			"name": "borrow",
+			"description": "",
+			"item": [
+				{
+					"name": "book list",
+					"request": {
+						"url": "http://localhost:8080/module7/book",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"tam@afjd.jf\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
+						},
 						"description": ""
 					},
-					{
-						"key": "Authorization",
-						"value": "Basic am9obkBkb2UuaHU6cGFzcw==",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"email\": \"tam@afjd.jf\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "single book",
-			"request": {
-				"url": "http://localhost:8080/module7/book/1",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "single book",
+					"request": {
+						"url": "http://localhost:8080/module7/book/1",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "registration",
+					"request": {
+						"url": "http://localhost:8080/module7/registration",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"tam@as.ta\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "borrow",
+					"request": {
+						"url": "http://localhost:8080/module7/book/borrow",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic dGFtQGFzLnRhOmFsZmE=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bookId\": 2,\n\t\"till\": \"2017-11-01\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "my borrows",
+					"request": {
+						"url": "http://localhost:8080/module7/user/profile",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bookId\": 2,\n\t\"till\": \"2017-11-01\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "handover",
+					"request": {
+						"url": "http://localhost:8080/module7/book/handover",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bookId\": 2,\n\t\"user\": \"tam@as.ta\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "subscribe",
@@ -71,20 +147,23 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic am9obkBkb2UuaHU6cGFzcw==",
+						"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
 						"description": ""
 					}
 				],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "borrow",
+			"name": "extend borrow",
 			"request": {
 				"url": "http://localhost:8080/module7/book/borrow",
-				"method": "POST",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Authorization",
@@ -100,6 +179,31 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"bookId\": 2,\n\t\"till\": \"2017-11-01\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "returnBook",
+			"request": {
+				"url": "http://localhost:8080/module7/book/returnBook",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"bookId\": 1,\n\t\"user\": \"john@doe.hu\"\n}"
 				},
 				"description": ""
 			},
