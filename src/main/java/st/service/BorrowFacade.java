@@ -1,51 +1,54 @@
 package st.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import st.dto.Borrow;
 import st.dto.Handover;
 import st.dto.ReturnBook;
+import st.dto.User;
 import st.entity.BookEntity;
 import st.entity.BorrowEntity;
 import st.entity.UserEntity;
 import st.repository.BookRepository;
+import st.repository.BorrowRepository;
 
+import javax.persistence.EntityManager;
 import java.util.Objects;
 
-import static st.service.BorrowFacade.BorrowResult.FAILED;
-import static st.service.BorrowFacade.BorrowResult.SUCCESS;
+import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 @Service
 public class BorrowFacade {
-    @Autowired
     private BookRepository bookRepository;
-    @Autowired
     private UserService userService;
-    @Autowired
     private BookService bookService;
+    private final BorrowRepository borrowRepository;
+    private final EntityManager entityManager;
 
-    @Transactional
-    public BorrowResult borrow(Borrow borrow) {
-        try {
-            BookEntity bookEntity = bookRepository.findOne(borrow.getBookId());
-            UserEntity currentUser = userService.getCurrentUser();
-
-            BorrowEntity borrowEntity = new BorrowEntity();
-            borrowEntity.setUser(currentUser);
-            borrowEntity.setBook(bookEntity);
-            borrowEntity.setTill(borrow.getTill());
-
-            bookEntity.getBorrows().add(borrowEntity);
-            bookService.update(bookEntity);
-        } catch (Exception e) {
-            return FAILED;
-        }
-
-        return SUCCESS;
+    public BorrowFacade(BookRepository bookRepository, UserService userService, BookService bookService, BorrowRepository borrowRepository, EntityManager entityManager) {
+        this.bookRepository = bookRepository;
+        this.userService = userService;
+        this.bookService = bookService;
+        this.borrowRepository = borrowRepository;
+        this.entityManager = entityManager;
     }
 
-    public boolean updateBorrowTime(Borrow borrow) {
+    @Transactional
+    public User borrow(Borrow borrow) {
+        BookEntity bookEntity = bookRepository.findOne(borrow.getBookId());
+        UserEntity currentUser = userService.getCurrentUser();
+
+
+        BorrowEntity borrowEntity = new BorrowEntity();
+        borrowEntity.setUser(currentUser);
+        borrowEntity.setBook(bookEntity);
+        borrowEntity.setTill(borrow.getTill());
+
+        currentUser.getBorrows().add(borrowEntity);
+        return userService.update(currentUser);
+    }
+
+    public User updateBorrowTime(Borrow borrow) {
         UserEntity currentUser = userService.getCurrentUser();
         currentUser
                 .getBorrows()
@@ -55,13 +58,11 @@ public class BorrowFacade {
                 .orElseThrow(() -> new IllegalStateException("Borrow not found"))
                 .setTill(borrow.getTill());
 
-        userService.update(currentUser);
-
-        return true;
+        return userService.update(currentUser);
     }
 
-    public boolean handover(Handover handover) {
-        UserEntity user = userService.getUser(handover.getUser());
+    public User handover(Handover handover) {
+        UserEntity user = userService.getUserEntity(handover.getUser());
         user
                 .getBorrows()
                 .stream()
@@ -70,13 +71,12 @@ public class BorrowFacade {
                 .orElseThrow(() -> new IllegalStateException("Borrow not found"))
                 .setHandedOver(true);
 
-        userService.update(user);
-
-        return true;
+        return userService.update(user);
     }
 
-    public boolean returnBook(ReturnBook returnBook) {
-        UserEntity user = userService.getUser(returnBook.getUser());
+    @Transactional(propagation = REQUIRED)
+    public User returnBook(ReturnBook returnBook) {
+        UserEntity user = userService.getUserEntity(returnBook.getUser());
         BorrowEntity borrow = user
                 .getBorrows()
                 .stream()
@@ -86,13 +86,11 @@ public class BorrowFacade {
 
         borrow.setHandedOver(false);
 
-        userService.update(user);
+        user.getBorrows().remove(borrow);
+        User updated = userService.update(user);
 
-        return true;
+        entityManager.remove(borrow);
+
+        return updated;
     }
-
-    public enum BorrowResult {
-        SUCCESS, FAILED
-    }
-
 }

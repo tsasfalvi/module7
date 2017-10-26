@@ -24,7 +24,7 @@ public class BookService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Iterable<BookEntity> getAllBooks() {
+    public Iterable<Book> getAllBooks() {
         Iterable<BookEntity> all = bookRepository.findAll();
         return modelMapper.map(all, new TypeToken<List<Book>>() {
         }.getType());
@@ -35,12 +35,12 @@ public class BookService {
     }
 
     @Transactional(propagation = REQUIRED)
-    public void update(BookEntity bookEntity) {
-        bookRepository.save(bookEntity);
+    public BookEntity update(BookEntity bookEntity) {
+        return bookRepository.save(bookEntity);
     }
 
     @Transactional(propagation = REQUIRED)
-    public void saveOrUpdate(Book book) {
+    public Book saveOrUpdate(Book book) {
         BookEntity bookEntity;
         if (book.getId() != null) {
             bookEntity = bookRepository.findOne(book.getId());
@@ -50,7 +50,7 @@ public class BookService {
         }
         bookEntity.setTitle(book.getTitle());
         bookEntity.setAuthor(book.getAuthor());
-        bookRepository.save(bookEntity);
+        return modelMapper.map(bookRepository.save(bookEntity), Book.class);
     }
 
     public void delete(long bookId) {

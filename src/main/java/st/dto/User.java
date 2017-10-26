@@ -1,13 +1,18 @@
 package st.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import st.entity.BookEntity;
 import st.entity.BorrowEntity;
 
 import java.util.Set;
 
-public class Profile {
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
+@JsonInclude(NON_NULL)
+public class User {
     private String email;
     private String name;
+    private boolean suspended;
     private Role role;
     private Set<BookEntity> subscriptions;
     private Set<BorrowEntity> borrows;
@@ -26,6 +31,14 @@ public class Profile {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
     }
 
     public Role getRole() {

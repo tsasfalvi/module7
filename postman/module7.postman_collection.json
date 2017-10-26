@@ -95,7 +95,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+								"value": "Basic dGFtQGFzLnRhOmFsZmE=",
 								"description": ""
 							},
 							{
@@ -136,6 +136,56 @@
 						"description": ""
 					},
 					"response": []
+				},
+				{
+					"name": "extend borrow",
+					"request": {
+						"url": "http://localhost:8080/module7/book/borrow",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic dGFtQGFzLnRhOmFsZmE=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bookId\": 2,\n\t\"till\": \"2017-11-11\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "returnBook",
+					"request": {
+						"url": "http://localhost:8080/module7/book/returnBook",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"bookId\": 1,\n\t\"user\": \"john@doe.hu\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
 				}
 			]
 		},
@@ -154,56 +204,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": ""
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "extend borrow",
-			"request": {
-				"url": "http://localhost:8080/module7/book/borrow",
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Basic am9obkBkb2UuaHU6cGFzcw==",
-						"description": ""
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"bookId\": 2,\n\t\"till\": \"2017-11-01\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "returnBook",
-			"request": {
-				"url": "http://localhost:8080/module7/book/returnBook",
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
-						"description": ""
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"bookId\": 1,\n\t\"user\": \"john@doe.hu\"\n}"
 				},
 				"description": ""
 			},

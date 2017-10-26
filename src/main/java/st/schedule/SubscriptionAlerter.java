@@ -6,6 +6,7 @@ import st.repository.BorrowRepository;
 import st.service.MailSendingService;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static java.time.LocalDate.now;
@@ -27,6 +28,7 @@ public class SubscriptionAlerter {
         executorService.schedule(alerter, 10, SECONDS);
     }
 
+    @PreDestroy
     private void destroy() {
         executorService.shutdownNow();
     }
@@ -34,7 +36,7 @@ public class SubscriptionAlerter {
     private Runnable initRunnable() {
         return () -> {
             borrowRepository.findAllOutdated(now()).forEach(borrowEntity -> mailSendingService.send(borrowEntity));
-            executorService.schedule(alerter, 30, SECONDS);
+            executorService.schedule(alerter, 300, SECONDS);
         };
     }
 }

@@ -1,19 +1,21 @@
 package st.service;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import st.dto.Profile;
+import st.dto.User;
 import st.dto.UserRegistration;
 import st.entity.UserEntity;
 import st.repository.UserRepository;
+
+import java.util.List;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 import static st.dto.Role.ROLE_USER;
@@ -22,15 +24,18 @@ import static st.dto.Role.ROLE_USER;
 public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private ModelMapper modelMapper;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Transactional
-    public void createUser(UserRegistration userRegistration) {
+    public User createUser(UserRegistration userRegistration) {
         if (userRepository.exists(userRegistration.getEmail())) {
             throw new IllegalStateException("There is an account with that email adress: " + userRegistration.getEmail());
         }
@@ -40,12 +45,12 @@ public class UserService {
         userEntity.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
         userEntity.setRole(ROLE_USER);
 
-        userRepository.save(userEntity);
+        return modelMapper.map(userRepository.save(userEntity), User.class);
     }
 
     @Transactional(propagation = REQUIRED)
-    public void update(UserEntity userEntity) {
-        userRepository.save(userEntity);
+    public User update(UserEntity userEntity) {
+        return modelMapper.map(userRepository.save(userEntity), User.class);
     }
 
     @Transactional(propagation = REQUIRED)
@@ -59,12 +64,13 @@ public class UserService {
         return null;
     }
 
-
-    public Iterable<UserEntity> getAllUsers() {
-        return userRepository.findAll();
+    public Iterable<User> getAllUsers() {
+        return modelMapper.map(userRepository.findAll(), new TypeToken<List<User>>() {
+        }.getType());
     }
 
-    public void saveOrUpdate(UserRegistration userRegistration) {
+    @Transactional(propagation = REQUIRED)
+    public User saveOrUpdate(UserRegistration userRegistration) {
         UserEntity userEntity;
         userEntity = userRepository.findOne(userRegistration.getEmail());
         if (userEntity != null) {
@@ -72,22 +78,26 @@ public class UserService {
             userEntity.setName(userRegistration.getName());
             // TODO: save the hash instead of the password
             userEntity.setPassword(userRegistration.getPassword());
-            userRepository.save(userEntity);
+            return modelMapper.map(userRepository.save(userEntity), User.class);
         } else {
-            createUser(userRegistration);
+            return createUser(userRegistration);
         }
     }
 
-    public UserEntity getUser(String eMail) {
+    public UserEntity getUserEntity(String eMail) {
         return userRepository.findOne(eMail);
+    }
+
+    public User getUser(String eMail) {
+        return modelMapper.map(getUserEntity(eMail), User.class);
     }
 
     public void delete(String eMail) {
         userRepository.delete(eMail);
     }
 
-    public Profile getProfile() {
+    public User getProfile() {
         UserEntity currentUser = getCurrentUser();
-        return modelMapper.map(currentUser, Profile.class);
+        return modelMapper.map(currentUser, User.class);
     }
 }
