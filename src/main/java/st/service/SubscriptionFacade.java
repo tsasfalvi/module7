@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import st.dto.User;
 import st.entity.BookEntity;
 import st.entity.UserEntity;
+import st.exception.SuspendedException;
 import st.repository.BookRepository;
 
 @Service
@@ -16,8 +17,13 @@ public class SubscriptionFacade {
     private BookRepository bookRepository;
 
     @Transactional
-    public User subscribe(long bookId) {
+    public User subscribe(long bookId) throws SuspendedException {
         UserEntity currentUser = userService.getCurrentUser();
+
+        if (currentUser.isSuspended()) {
+            throw new SuspendedException("your account is suspended currently");
+        }
+
         BookEntity bookEntity = bookRepository.findOne(bookId);
         currentUser.getSubscriptions().add(bookEntity);
         return userService.update(currentUser);

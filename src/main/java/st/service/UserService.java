@@ -1,9 +1,8 @@
 package st.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,16 +13,20 @@ import st.dto.Role;
 import st.dto.User;
 import st.dto.UserRegistration;
 import st.entity.UserEntity;
+import st.exception.BadRequestException;
 import st.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static java.util.Objects.isNull;
 import static org.springframework.transaction.annotation.Propagation.REQUIRED;
+import static st.dto.Role.ROLE_LIBRARIAN;
 import static st.dto.Role.ROLE_USER;
 
 @Service
 public class UserService {
-    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
     private static final String DEFAULT_PASSWORD = "abc123";
 
     private UserRepository userRepository;
@@ -37,9 +40,9 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(UserRegistration userRegistration) {
+    public User createUser(UserRegistration userRegistration) throws BadRequestException {
         if (userRepository.exists(userRegistration.getEmail())) {
-            throw new IllegalStateException("There is an account with that email adress: " + userRegistration.getEmail());
+            throw new BadRequestException("There is an account with that email adress: " + userRegistration.getEmail());
         }
 
         UserEntity userEntity = modelMapper.map(userRegistration, UserEntity.class);
@@ -52,13 +55,13 @@ public class UserService {
     @Transactional(propagation = REQUIRED)
     public User update(User user) {
         UserEntity userEntity = getUserEntity(user.getEmail());
+
         if (userEntity == null) {
             userEntity = modelMapper.map(user, UserEntity.class);
             initUserEntity(userEntity, user.getRole(), DEFAULT_PASSWORD);
         } else {
             userEntity.setName(user.getName());
             userEntity.setSuspended(user.isSuspended());
-            userEntity.setRole(user.getRole());
         }
         return modelMapper.map(userRepository.save(userEntity), User.class);
     }
@@ -75,8 +78,13 @@ public class UserService {
     }
 
     public Iterable<User> getAllUsers() {
-        return modelMapper.map(userRepository.findAll(), new TypeToken<List<User>>() {
-        }.getType());
+        UserEntity currentUser = getCurrentUser();
+        if (Objects.equals(currentUser.getRole(), ROLE_LIBRARIAN)) {
+            return modelMapper.map(userRepository.findAll(), new TypeToken<List<User>>() {
+            }.getType());
+        } else {
+            return Collections.singletonList(modelMapper.map(currentUser, User.class));
+        }
     }
 
     public UserEntity getUserEntity(String eMail) {
@@ -104,13 +112,29 @@ public class UserService {
         if (password == null) {
             password = DEFAULT_PASSWORD;
         }
+
         if (userEntity.getSubscriptions() != null) {
             userEntity.setSubscriptions(null);
         }
+
         if (userEntity.getBorrows() != null) {
             userEntity.setBorrows(null);
         }
+
         userEntity.setPassword(passwordEncoder.encode(password));
         userEntity.setRole(roleUser);
+    }
+
+    public User patch(JsonNode field) throws BadRequestException {
+        JsonNode suspendedNode = field.get("suspended");
+        if (isNull(suspendedNode)) {
+            throw new BadRequestException("only suspended allowed");
+        }
+        boolean suspended = suspendedNode.asBoolean();
+
+        UserEntity currentUser = getCurrentUser();
+        currentUser.setSuspended(suspended);
+
+        return modelMapper.map(userRepository.save(currentUser), User.class);
     }
 }

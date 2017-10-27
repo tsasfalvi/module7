@@ -1,6 +1,7 @@
 package st.schedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import st.repository.BorrowRepository;
 import st.service.MailSendingService;
@@ -14,11 +15,14 @@ import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Component
-public class SubscriptionAlerter {
+public class BorrowAlerter {
     @Autowired
     private BorrowRepository borrowRepository;
     @Autowired
     private MailSendingService mailSendingService;
+
+    @Value("${borrow.check.intervals}")
+    private long borrowCheckIntervals;
 
     private ScheduledExecutorService executorService = newSingleThreadScheduledExecutor();
     private Runnable alerter = initRunnable();
@@ -36,7 +40,7 @@ public class SubscriptionAlerter {
     private Runnable initRunnable() {
         return () -> {
             borrowRepository.findAllOutdated(now()).forEach(borrowEntity -> mailSendingService.send(borrowEntity));
-            executorService.schedule(alerter, 300, SECONDS);
+            executorService.schedule(alerter, borrowCheckIntervals, SECONDS);
         };
     }
 }

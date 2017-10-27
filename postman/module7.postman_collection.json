@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "borrow",
+			"name": "user Journey",
 			"description": "",
 			"item": [
 				{
@@ -38,26 +38,6 @@
 						"method": "GET",
 						"header": [],
 						"body": {},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "registration",
-					"request": {
-						"url": "http://localhost:8080/module7/registration",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"tam@as.ta\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
-						},
 						"description": ""
 					},
 					"response": []
@@ -181,13 +161,33 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"bookId\": 1,\n\t\"user\": \"john@doe.hu\"\n}"
+							"raw": "{\n\t\"bookId\": 2,\n\t\"user\": \"tam@as.ta\"\n}"
 						},
 						"description": ""
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "registration",
+			"request": {
+				"url": "http://localhost:8080/module7/registration",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"tam@as.ta\",\n\t\"name\": \"Tamas Sasfalvi\",\n\t\"password\": \"alfa\",\n\t\"matchingPassword\": \"alfa\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		},
 		{
 			"name": "subscribe",
@@ -197,13 +197,38 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+						"value": "Basic dGFtQGFzLnRhOmFsZmE=",
 						"description": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "suspend",
+			"request": {
+				"url": "http://localhost:8080/module7/user/tam@as.ta",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic dGFtQGFzLnRhOmFsZmE=",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"suspended\": true\n}"
 				},
 				"description": ""
 			},

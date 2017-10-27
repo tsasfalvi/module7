@@ -9,6 +9,7 @@ import st.dto.User;
 import st.entity.BookEntity;
 import st.entity.BorrowEntity;
 import st.entity.UserEntity;
+import st.exception.SuspendedException;
 import st.repository.BookRepository;
 import st.repository.BorrowRepository;
 
@@ -34,10 +35,11 @@ public class BorrowFacade {
     }
 
     @Transactional
-    public User borrow(Borrow borrow) {
+    public User borrow(Borrow borrow) throws SuspendedException {
         BookEntity bookEntity = bookRepository.findOne(borrow.getBookId());
         UserEntity currentUser = userService.getCurrentUser();
 
+        checkuser(currentUser);
 
         BorrowEntity borrowEntity = new BorrowEntity();
         borrowEntity.setUser(currentUser);
@@ -48,8 +50,17 @@ public class BorrowFacade {
         return userService.update(currentUser);
     }
 
-    public User updateBorrowTime(Borrow borrow) {
+    private void checkuser(UserEntity currentUser) throws SuspendedException {
+        if (currentUser.isSuspended()) {
+            throw new SuspendedException("your account is suspended currently");
+        }
+    }
+
+    public User updateBorrowTime(Borrow borrow) throws SuspendedException {
         UserEntity currentUser = userService.getCurrentUser();
+
+        checkuser(currentUser);
+
         currentUser
                 .getBorrows()
                 .stream()

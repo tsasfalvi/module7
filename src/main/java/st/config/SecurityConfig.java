@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private void configureBooks(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers(GET, "/book", "/book/*").permitAll();
         http.authorizeRequests().antMatchers(POST, "/book/borrow").hasAuthority(ROLE_USER.toString());
-        http.authorizeRequests().antMatchers(PUT, "/book/*/handover").hasAuthority(ROLE_LIBRARIAN.toString());
+        http.authorizeRequests().antMatchers(PUT, "/book/handover").hasAuthority(ROLE_LIBRARIAN.toString());
     }
 
     private void configureBasicAuth(HttpSecurity http) throws Exception {
@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/").permitAll();
         http.authorizeRequests().antMatchers("/partials/home").permitAll();
         http.authorizeRequests().antMatchers("/partials/booklist").permitAll();
+//        http.authorizeRequests().antMatchers("/partials/userlist").hasAuthority(ROLE_LIBRARIAN.toString());
     }
 
     private void configureH2(HttpSecurity http) throws Exception {

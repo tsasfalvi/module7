@@ -12,6 +12,6 @@ public class MailSendingService {
 
 
     public void send(BorrowEntity borrowEntity) {
-        LOG.warn("Borrow outdated {}, {}", borrowEntity.getBookId(), borrowEntity.getUser().getEmail());
+        LOG.warn("EMAIL SENT: Borrow outdated {}, {}", borrowEntity.getBookId(), borrowEntity.getUser().getEmail());
     }
 }
