@@ -1,7 +1,6 @@
 package st.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +22,7 @@ public class SubscriptionController {
 
     @ResponseBody
     @RequestMapping(value = "/{bookId}", method = PUT)
-    public ResponseEntity<User> subscribe(@PathVariable int bookId, Authentication authentication) {
+    public ResponseEntity<User> subscribe(@PathVariable int bookId) {
         User result = subscriptionFacade.subscribe(bookId);
         return new ResponseEntity<>(result, OK);
     }

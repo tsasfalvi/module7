@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import st.dto.Role;
 import st.dto.User;
 import st.dto.UserRegistration;
 import st.entity.UserEntity;
@@ -23,6 +24,7 @@ import static st.dto.Role.ROLE_USER;
 @Service
 public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+    private static final String DEFAULT_PASSWORD = "abc123";
 
     private UserRepository userRepository;
     private ModelMapper modelMapper;
@@ -42,14 +44,22 @@ public class UserService {
 
         UserEntity userEntity = modelMapper.map(userRegistration, UserEntity.class);
 
-        userEntity.setPassword(passwordEncoder.encode(userRegistration.getPassword()));
-        userEntity.setRole(ROLE_USER);
+        initUserEntity(userEntity, ROLE_USER, userRegistration.getPassword());
 
         return modelMapper.map(userRepository.save(userEntity), User.class);
     }
 
     @Transactional(propagation = REQUIRED)
-    public User update(UserEntity userEntity) {
+    public User update(User user) {
+        UserEntity userEntity = getUserEntity(user.getEmail());
+        if (userEntity == null) {
+            userEntity = modelMapper.map(user, UserEntity.class);
+            initUserEntity(userEntity, user.getRole(), DEFAULT_PASSWORD);
+        } else {
+            userEntity.setName(user.getName());
+            userEntity.setSuspended(user.isSuspended());
+            userEntity.setRole(user.getRole());
+        }
         return modelMapper.map(userRepository.save(userEntity), User.class);
     }
 
@@ -69,21 +79,6 @@ public class UserService {
         }.getType());
     }
 
-    @Transactional(propagation = REQUIRED)
-    public User saveOrUpdate(UserRegistration userRegistration) {
-        UserEntity userEntity;
-        userEntity = userRepository.findOne(userRegistration.getEmail());
-        if (userEntity != null) {
-            LOG.info("Loaded userEntity: {}", userEntity);
-            userEntity.setName(userRegistration.getName());
-            // TODO: save the hash instead of the password
-            userEntity.setPassword(userRegistration.getPassword());
-            return modelMapper.map(userRepository.save(userEntity), User.class);
-        } else {
-            return createUser(userRegistration);
-        }
-    }
-
     public UserEntity getUserEntity(String eMail) {
         return userRepository.findOne(eMail);
     }
@@ -99,5 +94,23 @@ public class UserService {
     public User getProfile() {
         UserEntity currentUser = getCurrentUser();
         return modelMapper.map(currentUser, User.class);
+    }
+
+    public User update(UserEntity user) {
+        return modelMapper.map(userRepository.save(user), User.class);
+    }
+
+    private void initUserEntity(UserEntity userEntity, Role roleUser, String password) {
+        if (password == null) {
+            password = DEFAULT_PASSWORD;
+        }
+        if (userEntity.getSubscriptions() != null) {
+            userEntity.setSubscriptions(null);
+        }
+        if (userEntity.getBorrows() != null) {
+            userEntity.setBorrows(null);
+        }
+        userEntity.setPassword(passwordEncoder.encode(password));
+        userEntity.setRole(roleUser);
     }
 }

@@ -16,7 +16,6 @@ import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -31,16 +30,13 @@ public class RegistrationController {
 
     @ResponseBody
     @RequestMapping(method = POST)
-    public ResponseEntity<Object> register(@Valid @RequestBody final UserRegistration userRegistration, BindingResult result, WebRequest request, Errors errors) {
+    public ResponseEntity<Object> register(@Valid @RequestBody final UserRegistration userRegistration, BindingResult result, WebRequest request,
+            Errors errors) {
         if (result.hasErrors()) {
             return new ResponseEntity<>(result.getAllErrors(), BAD_REQUEST);
         }
 
-        try {
-            User user = userService.createUser(userRegistration);
-            return new ResponseEntity<>(user, CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), INTERNAL_SERVER_ERROR);
-        }
+        User user = userService.createUser(userRegistration);
+        return new ResponseEntity<>(user, CREATED);
     }
 }

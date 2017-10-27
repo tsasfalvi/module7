@@ -16,6 +16,7 @@
         <script src="js/app/app.js"></script>
         <script src="js/app/BookService.js"></script>
         <script src="js/app/BookController.js"></script>
-
+        <script src="js/app/UserService.js"></script>
+        <script src="js/app/UserController.js"></script>
     </body>
 </html>

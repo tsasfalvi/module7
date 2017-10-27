@@ -67,12 +67,11 @@ angular.module('crudApp').controller('BookController',
                     },
                     function(errResponse){
                         console.error('Error while updating Book');
-                        self.errorMessage='Error while updating Book '+errResponse.data;
+                        self.errorMessage='Error while updating Book';
                         self.successMessage='';
                     }
                 );
         }
-
 
         function removeBook(id){
             console.log('About to remove Book with id '+id);
@@ -87,6 +86,18 @@ angular.module('crudApp').controller('BookController',
                 );
         }
 
+        function borrowBook(id){
+            console.log('About to borrow Book with id '+id);
+            BookService.removeBook(id)
+                .then(
+                    function(){
+                        console.log('Book '+id + ' removed successfully');
+                    },
+                    function(errResponse){
+                        console.error('Error while removing book '+id +', Error :'+errResponse.data);
+                    }
+                );
+        }
 
         function getAllBooks(){
             return BookService.getAllBooks();

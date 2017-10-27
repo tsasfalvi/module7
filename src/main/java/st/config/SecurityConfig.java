@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void configureRoot(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/").permitAll();
+        http.authorizeRequests().antMatchers("/partials/home").permitAll();
+        http.authorizeRequests().antMatchers("/partials/booklist").permitAll();
     }
 
     private void configureH2(HttpSecurity http) throws Exception {

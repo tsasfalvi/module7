@@ -1,6 +1,6 @@
-INSERT INTO book (id, title, author) VALUES (1, 'title', 'Kent Beck')
-INSERT INTO book (id, title, author) VALUES (2, 'title2', 'Charlie')
-INSERT INTO book (id, title, author) VALUES (3, 'title3', 'name3')
+INSERT INTO book (id, title, author) VALUES (1, 'title1', 'author1')
+INSERT INTO book (id, title, author) VALUES (2, 'title2', 'author2')
+INSERT INTO book (id, title, author) VALUES (3, 'title3', 'author3')
 
 INSERT INTO user (email, name, suspended, password, role) VALUES ('john@doe.hu', 'Van nevem', false, '$2a$10$QlGMmTuUwLAKZDvLbcxQ3e6e0082Bmy7pKEyGNokbFUZclJmdt1ki', 'ROLE_LIBRARIAN')
 
