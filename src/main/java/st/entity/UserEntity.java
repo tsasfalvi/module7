@@ -14,6 +14,7 @@ import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -27,7 +28,7 @@ public class UserEntity {
     @Enumerated(STRING)
     private Role role;
 
-    @OneToMany(fetch = LAZY, cascade = ALL)
+    @OneToMany(fetch = EAGER, cascade = ALL)
     @JoinTable(name = "subscription", joinColumns = @JoinColumn(name = "user_email"), inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<BookEntity> subscriptions;
 

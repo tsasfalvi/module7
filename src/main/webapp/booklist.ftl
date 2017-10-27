@@ -3,7 +3,7 @@
 <div class="generic-container">
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Books </span></div>
+        <div class="panel-heading"><span class="lead">Book</span></div>
         <div class="panel-body">
             <div class="formcontainer">
                 <div class="alert alert-success" role="alert" ng-if="bookCtrl.successMessage">{{bookCtrl.successMessage}}</div>
@@ -50,6 +50,7 @@
                         <th>AUTHOR</th>
                         <th width="100"></th>
                         <th width="100"></th>
+                        <th width="100"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -58,7 +59,7 @@
                         <td>{{u.author}}</td>
                         <td><button type="button" ng-click="bookCtrl.editBook(u.id)" class="btn btn-success custom-width">Edit</button></td>
                         <td><button type="button" ng-click="bookCtrl.removeBook(u.id)" class="btn btn-danger custom-width">Remove</button></td>
-                        <td><button type="button" ng-click="bookCtrl.removeBook(u.id)" class="btn btn-success custom-width">Borrow</button></td>
+                        <td><button type="button" ng-click="bookCtrl.borrowBook(u.id)" class="btn btn-success custom-width">Borrow</button></td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,7 +1,7 @@
 <div class="generic-container">
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Users </span></div>
+        <div class="panel-heading"><span class="lead">User</span></div>
         <div class="panel-body">
             <div class="formcontainer">
                 <div class="alert alert-success" role="alert" ng-if="ctrl.successMessage">{{ctrl.successMessage}}</div>
@@ -53,6 +53,46 @@
                         </div>
                     </div>
                 </form>
+
+                <label class="lead" for="email">Borrows</label>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>TITLE</th>
+                            <th>AUTHOR</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="u in ctrl.user.borrows">
+
+                            <td>{{u.bookId}}</td>
+                            <td>{{u.till}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <label class="lead" for="email">Subscriptions</label>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>TITLE</th>
+                            <th>AUTHOR</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="u in ctrl.user.subscriptions">
+
+                            <td>{{u.title}}</td>
+                            <td>{{u.author}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
             </div>
         </div>
     </div>

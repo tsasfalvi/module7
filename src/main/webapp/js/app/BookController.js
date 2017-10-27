@@ -12,6 +12,7 @@ angular.module('crudApp').controller('BookController',
         self.createBook = createBook;
         self.updateBook = updateBook;
         self.removeBook = removeBook;
+        self.borrowBook = borrowBook;
         self.editBook = editBook;
         self.reset = reset;
 
@@ -88,13 +89,13 @@ angular.module('crudApp').controller('BookController',
 
         function borrowBook(id){
             console.log('About to borrow Book with id '+id);
-            BookService.removeBook(id)
+            BookService.borrowBook(id)
                 .then(
                     function(){
-                        console.log('Book '+id + ' removed successfully');
+                        console.log('Trying to borrow Book '+id);
                     },
                     function(errResponse){
-                        console.error('Error while removing book '+id +', Error :'+errResponse.data);
+                        console.error('Error while borrowing book '+id +', Error :'+errResponse.data);
                     }
                 );
         }

@@ -46,6 +46,7 @@ angular.module('crudApp').factory('UserService',
                         function (response) {
                             console.log('Fetched successfully user with email :'+email);
                             deferred.resolve(response.data);
+                            console.log('users: ', response.data);
                         },
                         function (errResponse) {
                             console.error('Error while loading user with email :'+email);

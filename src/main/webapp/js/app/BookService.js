@@ -10,7 +10,8 @@ angular.module('crudApp').factory('BookService',
                 getBook: getBook,
                 createBook: createBook,
                 updateBook: updateBook,
-                removeBook: removeBook
+                removeBook: removeBook,
+                borrowBook: borrowBook
             };
 
             return factory;
@@ -93,6 +94,29 @@ angular.module('crudApp').factory('BookService',
                 console.log('Removing book with id '+id);
                 var deferred = $q.defer();
                 $http.delete(urls.BOOK_SERVICE_API + id)
+                    .then(
+                        function (response) {
+                            loadAllBooks();
+                            deferred.resolve(response.data);
+                        },
+                        function (errResponse) {
+                            console.error('Error while removing book with id :'+id);
+                            deferred.reject(errResponse);
+                        }
+                    );
+                return deferred.promise;
+            }
+
+            function borrowBook(id) {
+                console.log('Borrowing book with id '+id);
+                var deferred = $q.defer();
+
+                var reqBody = {
+                				bookId : id,
+                				till : "2017-11-01"
+                		};
+
+                $http.post(urls.BOOK_SERVICE_API + 'borrow', reqBody)
                     .then(
                         function (response) {
                             loadAllBooks();
