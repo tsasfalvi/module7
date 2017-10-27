@@ -170,6 +170,62 @@
 			]
 		},
 		{
+			"name": "librarian_journey",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Book",
+					"request": {
+						"url": "http://localhost:8080/module7/book",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"title4\",\n\t\"author\": \"author4\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Book",
+					"request": {
+						"url": "http://localhost:8080/module7/book/4",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic am9obkBkb2UuaHU6YWxmYQ==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"title4\",\n\t\"author\": \"author44\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "registration",
 			"request": {
 				"url": "http://localhost:8080/module7/registration",
